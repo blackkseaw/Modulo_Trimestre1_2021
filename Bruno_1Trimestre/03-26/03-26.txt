@@ -1,0 +1,238 @@
+ATIVIDADE 1 - DELEGACIA
+
+DROP DATABASE IF EXISTS DBDELEGACIA;
+CREATE DATABASE DBDELEGACIA;
+USE DBDELEGACIA;
+
+CREATE TABLE CRIME (
+	IDCRIME INT NOT NULL,
+	DESCRICAO VARCHAR(255),
+	RUA VARCHAR(100),
+	NUMERO INT,
+	COMPLEMENTO VARCHAR(255),
+	BAIRRO VARCHAR(100),
+	CEP VARCHAR(8),
+	CIDADE VARCHAR(100),
+	ESTADO CHAR(2)
+);
+
+CREATE TABLE CRIMINOSO(
+  RUA VARCHAR(100),
+  NUMERO INT,
+  COMPLEMENTO VARCHAR(255),
+  BAIRRO VARCHAR(100),
+  CEP CHAR(8),
+  CIDADE VARCHAR(100),
+  ESTADO CHAR(2),
+  DTNASCIMENTO DATE,
+  TELEFONE VARCHAR(15)
+);
+
+CREATE TABLE OCORRENCIA (
+	IDOCORRENCIA INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	DT_OCORRENCIA DATE
+);
+
+CREATE TABLE ITEM_OCORRENCIA (
+	IDITEM INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	IDOCORRENCIA INT NOT NULL,
+	DESCRICAO VARCHAR (100),
+	CONSTRAINT FK_ITEM_OCORRENCIA_OCORRENCIA FOREIGN KEY (IDOCORRENCIA) REFERENCES OCORRENCIA(IDOCORRENCIA)
+);
+
+CREATE TABLE VITIMA (
+  RUA VARCHAR(100),
+  NUMERO INT,
+  COMPLEMENTO VARCHAR(255),
+  BAIRRO VARCHAR(100),
+  CEP VARCHAR(8),
+  CIDADE VARCHAR(100),
+  ESTADO CHAR(2),
+  DTNASCIMENTO DATE
+);
+
+/*certo*/
+CREATE TABLE COMETE(
+	IDCRIME INT NOT NULL,
+	IDCRIMINOSO INT NOT NULL
+);
+
+CREATE TABLE ATACA (
+	OBSERVACAO CHAR(1)
+);
+
+/*certo*/
+CREATE TABLE SOFRE (
+	IDCRIME INT NOT NULL,
+	IDVITIMA INT NOT NULL
+);
+
+CREATE TABLE ARMA (
+	IDARMA INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	MARCA VARCHAR(110)
+);
+
+CREATE TABLE USADA (
+	IDARMA INT NOT NULL,
+	IDCRIME INT NOT NULL
+);
+
+alter table CRIME drop column RUA;
+alter table CRIME drop column NUMERO;
+alter table CRIME drop column COMPLEMENTO;
+alter table CRIME drop column BAIRRO;
+alter table CRIME drop column CEP;
+alter table CRIME drop column CIDADE;
+alter table CRIME drop column ESTADO;
+alter table CRIME add column DTCRIME datetime;
+alter table CRIME modify column DESCRICAO varchar(200);
+alter table CRIME add primary key(IDCRIME);
+
+alter table SOFRE add foreign key(IDCRIME) references crime(IDCRIME);
+alter table COMETE add foreign key(IDCRIME) references crime(IDCRIME);
+alter table CRIMINOSO add foreign key(IDCRIME) references crime(IDCRIME);
+                                                                                                                                                                                                
+alter table CRIMINOSO drop column RUA;
+alter table CRIMINOSO drop column NUMERO;
+alter table CRIMINOSO drop column COMPLEMENTO;
+alter table CRIMINOSO drop column BAIRRO;
+alter table CRIMINOSO drop column CEP;
+alter table CRIMINOSO drop column CIDADE;
+alter table CRIMINOSO drop column ESTADO;
+alter table CRIMINOSO drop column TELEFONE;
+alter table CRIMINOSO add column IDCRIMINOSO int;
+alter table CRIMINOSO add column NOME varchar(45);
+alter table CRIMINOSO add primary key(IDCRIMINOSO);
+
+alter table ATACA add foreign key(IDCRIMINOSO) references CRIMINOSO(IDCRIMINOSO);
+alter table COMETE add foreign key(IDCRIMINOSO) references CRIMINOSO(IDCRIMINOSO);
+
+
+DROP TABLE OCORRENCIA;
+
+DROP TABLE ITEM_OCORRENCIA;
+
+alter table VITIMA drop column RUA;
+alter table VITIMA drop column NUMERO;
+alter table VITIMA drop column COMPLEMENTO;
+alter table VITIMA drop column BAIRRO;
+alter table VITIMA drop column CEP;
+alter table VITIMA drop column CIDADE;
+alter table VITIMA drop column ESTADO;
+alter table VITIMA add column IDVITIMA int;
+alter table VITIMA add column NOME varchar(45);
+alter table VITIMA add column IDVITIMA int;
+alter table VITIMA add primary key(IDVITIMA);
+
+alter table SOFRE add foreign key(IDVITIMA) references VITIMA(IDVITIMA);
+alter table ATACA add foreign key(IDVITIMA) references VITIMA(IDVITIMA);
+
+alter table ATACA add column IDCRIMINOSO int;
+alter table ATACA add column IDVITIMA int;
+alter table ATACA drop column OBSERVACAO;
+
+alter table ARMA add column DESCRICAO varchar(45);
+alter table ARMA add column TIPO ENUM("Arma de fogo", "Arma branca");
+alter table ARMA add column IDIDENTIFICACAO varchar(15);
+alter table ARMA drop column MARCA;
+
+ALTER TABLE USADA RENAME USAR;
+
+
+ATIVIDADE 2 - ALUNO
+
+DROP DATABASE IF EXISTS DBALUNO;
+CREATE DATABASE DBALUNO;
+USE DBALUNO;
+
+CREATE TABLE ALUNO (
+	IDALUNO INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	NOME VARCHAR(20) NOT NULL,
+	SEXO ENUM ('M', 'F'),
+	IDADE int,
+	CIDADE VARCHAR(20)
+);
+
+alter table ALUNO modify column NOME varchar(45);
+alter table ALUNO modify column SEXO char(1);
+alter table ALUNO modify column CIDADE varchar(45);
+
+insert into ALUNO (NOME, SEXO, IDADE, CIDADE)
+values ("Anderson", "M", 17, "Palhoça");
+select * from ALUNO;
+
+insert into ALUNO (NOME, SEXO, IDADE, CIDADE)
+values ("Cesar", "M", 21, "São José");
+select * from ALUNO;
+
+insert into ALUNO (NOME, SEXO, IDADE, CIDADE)
+values ("Daniel", "M", 19, "Palhoça");
+select * from ALUNO;
+
+insert into ALUNO (NOME, SEXO, IDADE, CIDADE)
+values ("Diego", "M", 19, "Blumenau");
+select * from ALUNO;
+
+insert into ALUNO (NOME, SEXO, IDADE, CIDADE)
+values ("Eduardo", "M", 20, " ");
+select * from ALUNO;
+
+insert into ALUNO (NOME, SEXO, IDADE, CIDADE)
+values ("Gabriel", "M", 19, "Tubarão");
+select * from ALUNO;
+
+insert into ALUNO (NOME, SEXO, IDADE, CIDADE)
+values ("João", "M", 18, "São José");
+select * from ALUNO;
+
+insert into ALUNO (NOME, SEXO, IDADE, CIDADE)
+values ("Leonardo", "M", 19, " ");
+select * from ALUNO;
+
+insert into ALUNO (NOME, SEXO, IDADE, CIDADE)
+values ("João", "M", 20, "Blumenau");
+select * from ALUNO;
+
+insert into ALUNO (NOME, SEXO, IDADE, CIDADE)
+values ("Priscila", "F", 19, "Palhoça");
+select * from ALUNO;
+
+insert into ALUNO (NOME, SEXO, IDADE, CIDADE)
+values ("Renata", "F", 21, "Tubarão");
+select * from ALUNO;
+
+insert into ALUNO (NOME, SEXO, IDADE, CIDADE)
+values ("Maria", "F", 22, "Blumenau");
+select * from ALUNO;
+
+insert into ALUNO (NOME, SEXO, IDADE, CIDADE)
+values ("Tania", "F", 19, "São José");
+select * from ALUNO;
+
+insert into ALUNO (NOME, SEXO, IDADE, CIDADE)
+values ("Carlos", "M", 22, "Tubarão");
+select * from ALUNO;
+
+insert into ALUNO (NOME, SEXO, IDADE, CIDADE)
+values ("José", "M", 19, "Palhoça");
+select * from ALUNO;
+
+insert into ALUNO (NOME, SEXO, IDADE, CIDADE)
+values ("Marisa", "F", 19, " ");
+select * from ALUNO;
+
+insert into ALUNO (NOME, SEXO, IDADE, CIDADE)
+values ("Amanda", "F", 20, " ");
+select * from ALUNO;
+
+insert into ALUNO (NOME, SEXO, IDADE, CIDADE)
+values ("Joana", "F", 19, " ");
+select * from ALUNO;
+
+insert into ALUNO (NOME, SEXO, IDADE, CIDADE)
+values ("Alice", "F", 21, "São José");
+select * from ALUNO;
+
+insert into ALUNO (NOME, SEXO, IDADE, CIDADE)
+values ("Tadeu", "M", 18, "Tubarão");
+select * from ALUNO;
